@@ -109,7 +109,7 @@ WHERE history.instance_id = @HistoryID
 IF @ERRORSTATE = 1
 BEGIN
 
-	DECLARE @htmlText   	NVARCHAR(MAX) = '<P>ERROR! --> ' + @message + ' <br />'
+	DECLARE @htmlText   	NVARCHAR(MAX) = '<P>ERROR! --> <br />' + @message
 	DECLARE @Subject	VARCHAR (200) = 'Job status for: ' +  @job_name  + ' on ' + @@Servername 
 	DECLARE @content	VARCHAR (MAX) = 'Job status for: ' +  @job_name  + ' on ' + @@Servername 
 	DECLARE @HTML_Start 	VARCHAR (MAX) =
