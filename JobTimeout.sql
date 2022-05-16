@@ -109,10 +109,10 @@ WHERE history.instance_id = @HistoryID
 IF @ERRORSTATE = 1
 BEGIN
 
-	DECLARE @htmlText   NVARCHAR(MAX) = '<P>ERROR! --> ' + @message + ' <br />'
+	DECLARE @htmlText   	NVARCHAR(MAX) = '<P>ERROR! --> ' + @message + ' <br />'
 	DECLARE @Subject	VARCHAR (200) = 'Job status for: ' +  @job_name  + ' on ' + @@Servername 
 	DECLARE @content	VARCHAR (MAX) = 'Job status for: ' +  @job_name  + ' on ' + @@Servername 
-	DECLARE @HTML_Start VARCHAR (MAX) =
+	DECLARE @HTML_Start 	VARCHAR (MAX) =
 	N'
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 	<html lang="de">
@@ -139,8 +139,5 @@ BEGIN
 			,@profile_name = @EmailProfil
 			,@body_format = 'HTML';		
 END
-
-
-
 
 Print @message
