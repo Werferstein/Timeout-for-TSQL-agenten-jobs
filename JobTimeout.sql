@@ -10,10 +10,10 @@ Wenn das Timeout überschritten wurde, wird der betreffende Job gestoppt und ein
 
 
 DECLARE 
-@job_name NVARCHAR(MAX) = 'Agenten Job Name',
-@TimeOutInMin INT		    = 60,
-@EmailAdresse1 NVARCHAR(200)	    = 'YourEmail.com',
-@EmailProfil NVARCHAR(200)	    = 'YourEmailProfil'
+@job_name NVARCHAR(MAX)		= 'Agenten Job Name',
+@TimeOutInMin INT		= 60,
+@EmailAdresse1 NVARCHAR(200)	= 'YourEmail.com',
+@EmailProfil NVARCHAR(200)	= 'YourEmailProfil'
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,27 +53,28 @@ DECLARE @HistoryID AS INT = NULL, @start_execution_date DATETIME, @stopped BIT =
   WHILE @HistoryID IS NULL
   BEGIN
 							
-		--Read most recent Job History ID for the specified Agent Job name
+	--Read most recent Job History ID for the specified Agent Job name
         SELECT 
-			TOP 1 
-			@HistoryID = b.job_history_id,
-			@start_execution_date = b.start_execution_date
+		TOP 1 
+		@HistoryID = b.job_history_id,
+		@start_execution_date = b.start_execution_date
 		FROM msdb.dbo.sysjobs a
 		INNER JOIN msdb.dbo.sysjobactivity b ON b.job_id = a.job_id
         WHERE a.name = @job_name
-		ORDER BY b.start_execution_date DESC
+	ORDER BY b.start_execution_date DESC
         
-		SET @runtime = DATEDIFF(Minute,@start_execution_date,GETDATE());			
-		IF @runtime > @TimeOutInMin 
-		BEGIN																								
-			EXEC msdb.dbo.sp_stop_job @job_name;
-			SET @message += @htmlStart + 'Timeout for job: ' + @job_name + ' after ' + convert(varchar(20),@runtime) + ' min.' + @htmlStop;
-			SET @stopped = 1;
-			SET @ERRORSTATE = 1;
-			BREAK;			
-		END
-		--If Job is still running (Job History ID = NULL), wait 10 seconds
-		WAITFOR DELAY '00:00:10';
+	SET @runtime = DATEDIFF(Minute,@start_execution_date,GETDATE());			
+	IF @runtime > @TimeOutInMin 
+	BEGIN																								
+		EXEC msdb.dbo.sp_stop_job @job_name;
+		SET @message += @htmlStart + 'Timeout for job: ' + @job_name + ' after ' + convert(varchar(20),@runtime) + ' min.' + @htmlStop;
+		SET @stopped = 1;
+		SET @ERRORSTATE = 1;
+		BREAK;			
+	END
+	
+	--If Job is still running (Job History ID = NULL), wait 10 seconds
+	WAITFOR DELAY '00:00:10';
     END--WHILE
 
 if @stopped != 1
