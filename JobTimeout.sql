@@ -10,10 +10,10 @@ Wenn das Timeout überschritten wurde, wird der betreffende Job gestoppt und ein
 
 
 DECLARE 
-@job_name NVARCHAR(MAX)		= 'Agenten Job Name',
-@TimeOutInMin INT		= 60,
-@EmailAdresse1 NVARCHAR(200)	= 'YourEmail.com',
-@EmailProfil NVARCHAR(200)	= 'YourEmailProfil'
+@job_name NVARCHAR(MAX)		= 'Agenten Job Name',	--Agent job name
+@TimeOutInMin INT		= 60,			--Timeout in minutes
+@EmailAdresse1 NVARCHAR(200)	= 'YourEmail.com',	--Email address to send the message to
+@EmailProfil NVARCHAR(200)	= 'YourEmailProfil'	--Email profile name
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
