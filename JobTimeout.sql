@@ -11,10 +11,16 @@ Wenn das Timeout überschritten wurde, wird der betreffende Job gestoppt und ein
 
 DECLARE 
 @job_name NVARCHAR(MAX)		= 'Agenten Job Name',	--Agent job name
-@TimeOutInMin INT		= 60,			--Timeout in minutes
+@TimeOutInMin INT		= 80,			--Timeout in minutes
 @EmailAdresse1 NVARCHAR(200)	= 'YourEmail.com',	--Email address to send the message to
 @EmailProfil NVARCHAR(200)	= 'YourEmailProfil'	--Email profile name
 
+
+--The process is allowed to run longer on Sunday
+if DATEPART(WEEKDAY, GETDATE()) = 7
+BEGIN
+	SET @TimeOutInMin = 240;
+END
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 DECLARE @startTime DATETIME = GETDATE(), @runtime int = 0, @message varchar(MAX) = '', @cr VARCHAR(2) =CHAR(13)+ CHAR(10), @ERRORSTATE BIT = 0, @htmlStart VARCHAR(3) = '<P>',  @htmlStop VARCHAR(6) = '<br />'
